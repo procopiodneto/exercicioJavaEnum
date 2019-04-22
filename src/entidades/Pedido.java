@@ -1,5 +1,6 @@
 package entidades;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,9 @@ public class Pedido {
 	private EstadoPedido estado;
 	
 	private Cliente cliente ;
-	private List<Pedido> pedidos = new ArrayList<>() ;
+	private List<SepararItem> itens = new ArrayList<>() ;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss") ;
 	
 	public Pedido() {
 	}
@@ -47,9 +50,38 @@ public class Pedido {
 		this.cliente = cliente;
 	}
 
-	public List<Pedido> getPedidos() {
-		return pedidos;
+	public List<SepararItem> getItens() {
+		return itens;
 	}
 
+	public void adcItem(SepararItem item) {
+		itens.add(item) ;
+	}
+	
+	public void removeItem(SepararItem item) {
+		itens.remove(item) ;
+	}
+	
+	public double total() {
+		double total = 0;
+		for (SepararItem s: itens) {
+			total += s.subTotal() ;
+		}
+		return total ;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder() ;
+		sb.append("Momento do pedido: " + sdf.format(momento) + "\n") ;
+		sb.append("Estado do pedido: " + estado + "\n") ;
+		sb.append("Cliente: " + cliente + "\n") ;
+		sb.append("Itens pedidos:" + "\n") ;
+		for (SepararItem item : itens) {
+			sb.append(item + "\n" ) ;
+		}
+		sb.append("Preço total: R$" + String.format("%.2f", total()) ) ;
+		return sb.toString() ;
+	}
 	
 }
+ 
